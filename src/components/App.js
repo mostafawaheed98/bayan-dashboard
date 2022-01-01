@@ -1,8 +1,16 @@
 import React from 'react';
+import {Routes, Route } from 'react-router-dom';
 
-function App() {
+import Layout from './layout/Layout';
+import LoginForm from './layout/auth/LoginForm';
+
+const App = () => {
     return (
-        <h1>Hello World!</h1>
+            <Routes>
+                <Route path="/" element={<Layout/>}>
+                    <Route path="login" element={<LoginForm/>} />
+                </Route>
+            </Routes>
     );
 }
 

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, createContext} from 'react';
-import firebase from 'firebase/firebase-app';
-import "firebase/auth";
+import firebase from 'firebase/compat/app';
+import "firebase/compat/auth";
 
 firebase.initializeApp({
     apiKey: process.env.REACT_APP_FB_API,
@@ -52,7 +52,7 @@ export const AuthPovider = ({children})=>{
     useEffect(()=>{
         const unsubscribe = firebase.auth().onAuthStateChanged(user =>{
             setUser(user);
-            isAuthenticating(false);
+            setIsAuthenticating(false);
         })
 
         return ()=> unsubscribe();
