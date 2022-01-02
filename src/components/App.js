@@ -2,7 +2,7 @@ import React from 'react';
 import {Routes, Route } from 'react-router-dom';
 
 import Layout from './layout/Layout';
-import LoginForm from './layout/auth/LoginForm';
+import LoginForm from './auth/LoginForm';
 
 const App = () => {
     return (
