@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useContext, createContext} from 'react';
-import firebase from 'firebase/compat/app';
-import "firebase/compat/auth";
+import {initializeApp} from 'firebase/app';
+import {getAuth, sendSignInLinkToEmail, signInWithEmailLink, signOut, onAuthStateChanged, isSignInWithEmailLink} from "firebase/auth";
 
-firebase.initializeApp({
+const app = initializeApp({
     apiKey: process.env.REACT_APP_FB_API,
     authDomain: process.env.REACT_APP_FB_DOMAIN,
     projectId: process.env.REACT_APP_FB_PROJECT,
@@ -10,6 +10,8 @@ firebase.initializeApp({
     messagingSenderId: process.env.REACT_APP_FB_SENDER,
     appID: process.env.REACT_APP_FB_APP,
 });
+
+const auth = getAuth(app);
 
 const AuthContext = createContext();
 
@@ -23,8 +25,8 @@ export const AuthPovider = ({children})=>{
     const [user, setUser] = useState(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
 
-    const sendSignInLinkToEmail = email =>{
-        return firebase.auth().sendSignInLinkToEmail(email, {
+    const sendLoginInLinkToUserEmail = email =>{
+        return sendSignInLinkToEmail(auth, email, {
             url: 'http://localhost:3000/confirm',
             handleCodeInApp: true,
         }).then(()=>{
@@ -32,15 +34,16 @@ export const AuthPovider = ({children})=>{
         })
     }
 
-    const signInWithEmailLink = (email, code)=>{
-        return firebase.auth().signInWithEmailLink(email, code).then(result => {
+    const loginInWithEmailLink = (email, code)=>{
+        return signInWithEmailLink(auth, email, code).then(result => {
+            console.log(result);
             setUser(result.user);
             return true;
         })
     }
 
     const logout = ()=>{
-        return firebase.auth().signOut().then(()=>{
+        return signOut(auth).then(()=>{
             setUser(null);
         })
     }
@@ -50,7 +53,7 @@ export const AuthPovider = ({children})=>{
     // It will case any component that utilizes this hook to re-render with the latest auth object.
 
     useEffect(()=>{
-        const unsubscribe = firebase.auth().onAuthStateChanged(user =>{
+        const unsubscribe = onAuthStateChanged(auth, user =>{
             setUser(user);
             setIsAuthenticating(false);
         })
@@ -61,8 +64,8 @@ export const AuthPovider = ({children})=>{
     const values = {
         user,
         isAuthenticating,
-        sendSignInLinkToEmail,
-        signInWithEmailLink,
+        sendLoginInLinkToUserEmail,
+        loginInWithEmailLink,
         logout
     }
 

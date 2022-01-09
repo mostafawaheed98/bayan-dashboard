@@ -1,16 +1,21 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
+import {useLocation, useNavigate} from 'react-router-dom'
 import {useAuth} from '../../hooks/useAuth';
 
-function LoginForm() {
+function ConfirmForm() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful, ...formState }, setError } = useForm({mode: 'onChange'});
           
-    const {sendLoginInLinkToUserEmail} = useAuth();
+    const {loginInWithEmailLink} = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const onSubmit = async (data)=>{
         try {
-            await sendLoginInLinkToUserEmail(data.email);
+            await loginInWithEmailLink(data.email, location.href);
+            navigate('/')
         } catch (error) {
             setError('email',{
                 type: 'manual',
@@ -21,12 +26,11 @@ function LoginForm() {
 
     return (
         <>
-            <h3>Login to Bayan Dashboard</h3>
+            <h3>Confirm your email to login to Bayan Dashboard</h3>
             <hr/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                     {errors.email && <div className="alert alert-danger" role="alert">{errors.email.message}</div>}
-                    {isSubmitSuccessful && <div className="alert alert-success" role="alert">Check your email to complete login!</div>}
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input type="email" {...register("email", { required: "Email is required!" })} className="form-control" aria-describedby="emailError"/>
                 </div>
@@ -38,4 +42,4 @@ function LoginForm() {
     );
 }
 
-export default LoginForm;
+export default ConfirmForm;
