@@ -5,14 +5,17 @@ import Layout from './layout/Layout';
 import LoginForm from './auth/LoginForm';
 import ConfirmForm from './auth/ConfirmFrom';
 import PrivateRoute from './routes/PrivateRoute';
+import Profile from './dashboard/Dashboard';
+import NotFound from './layout/NotFound';
 
 const App = () => {
     return (
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    <PrivateRoute></PrivateRoute>
+                    <Route path="/dashboard" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
                     <Route path="login" element={<LoginForm/>} />
                     <Route path="confirm" element={<ConfirmForm/>}/>
+                    <Route path="*" element={<NotFound/>}/>
                 </Route>
             </Routes>
     );

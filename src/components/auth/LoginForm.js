@@ -1,12 +1,13 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
 
 function LoginForm() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful, ...formState }, setError } = useForm({mode: 'onChange'});
           
-    const {sendLoginInLinkToUserEmail} = useAuth();
+    const {user, sendLoginInLinkToUserEmail} = useAuth();
 
     const onSubmit = async (data)=>{
         try {
@@ -21,6 +22,7 @@ function LoginForm() {
 
     return (
         <>
+            {user && <Navigate to="/dashboard"/>}
             <h3>Login to Bayan Dashboard</h3>
             <hr/>
             <form onSubmit={handleSubmit(onSubmit)}>

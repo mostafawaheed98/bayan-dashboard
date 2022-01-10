@@ -43,6 +43,7 @@ export const AuthPovider = ({children})=>{
     }
 
     const logout = ()=>{
+        console.log("Trying to Logout...");
         return signOut(auth).then(()=>{
             setUser(null);
         })

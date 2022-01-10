@@ -1,13 +1,13 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {useLocation, useNavigate} from 'react-router-dom'
+import {Navigate, useLocation, useNavigate} from 'react-router-dom'
 import {useAuth} from '../../hooks/useAuth';
 
 function ConfirmForm() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful, ...formState }, setError } = useForm({mode: 'onChange'});
           
-    const {loginInWithEmailLink} = useAuth();
+    const {user, loginInWithEmailLink} = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -15,7 +15,7 @@ function ConfirmForm() {
     const onSubmit = async (data)=>{
         try {
             await loginInWithEmailLink(data.email, location.href);
-            navigate('/')
+            navigate('/dashboard')
         } catch (error) {
             setError('email',{
                 type: 'manual',
@@ -26,6 +26,7 @@ function ConfirmForm() {
 
     return (
         <>
+            {location.search == "" && <Navigate to="/login"/>}
             <h3>Confirm your email to login to Bayan Dashboard</h3>
             <hr/>
             <form onSubmit={handleSubmit(onSubmit)}>
