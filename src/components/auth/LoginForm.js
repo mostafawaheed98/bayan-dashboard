@@ -2,10 +2,11 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
+import {Helmet} from 'react-helmet';
 
 function LoginForm() {
 
-    const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful, ...formState }, setError } = useForm({mode: 'onChange'});
+    const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, setError } = useForm({mode: 'onChange'});
           
     const {user, sendLoginInLinkToUserEmail} = useAuth();
 
@@ -23,6 +24,9 @@ function LoginForm() {
     return (
         <>
             {user && <Navigate to="/dashboard"/>}
+            <Helmet>
+                <title>Login</title>
+            </Helmet>
             <h3>Login to Bayan Dashboard</h3>
             <hr/>
             <form onSubmit={handleSubmit(onSubmit)}>

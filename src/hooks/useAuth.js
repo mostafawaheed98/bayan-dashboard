@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, createContext} from 'react';
 import {initializeApp} from 'firebase/app';
-import {getAuth, sendSignInLinkToEmail, signInWithEmailLink, signOut, onAuthStateChanged, isSignInWithEmailLink} from "firebase/auth";
+import {getAuth, sendSignInLinkToEmail, signInWithEmailLink, signOut, onAuthStateChanged} from "firebase/auth";
 
 const app = initializeApp({
     apiKey: process.env.REACT_APP_FB_API,

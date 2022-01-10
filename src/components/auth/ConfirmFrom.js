@@ -2,12 +2,13 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Navigate, useLocation, useNavigate} from 'react-router-dom'
 import {useAuth} from '../../hooks/useAuth';
+import {Helmet} from 'react-helmet';
 
 function ConfirmForm() {
 
-    const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful, ...formState }, setError } = useForm({mode: 'onChange'});
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm({mode: 'onChange'});
           
-    const {user, loginInWithEmailLink} = useAuth();
+    const {loginInWithEmailLink} = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -26,7 +27,10 @@ function ConfirmForm() {
 
     return (
         <>
-            {location.search == "" && <Navigate to="/login"/>}
+            {location.search === "" && <Navigate to="/login"/>}
+            <Helmet>
+                <title>Confirm</title>
+            </Helmet>
             <h3>Confirm your email to login to Bayan Dashboard</h3>
             <hr/>
             <form onSubmit={handleSubmit(onSubmit)}>
